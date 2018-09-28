@@ -3,27 +3,14 @@ import os
 from PIL import Image
 from flask import render_template,url_for,flash,redirect,request
 from Demoapp import app,db,bcrypt
-from Demoapp.forms import RegistrationForm,LoginForm,UpdateAccountForm
+from Demoapp.forms import RegistrationForm,LoginForm,UpdateAccountForm,PostForm
 from Demoapp.models import Post,User
 from flask_login import login_user,current_user,logout_user,login_required
 
 
-posts = [
-    {
-        'author':'Sajib',
-        'title':'New Title',
-        'content':'This is a Brand New Content'
-    },
-    {
-        'author':'Jahidul',
-        'title':'New Title2',
-        'content':'This is a Brand New Content2'
-    }
-]
-
-
 @app.route('/')
 def home():
+    posts = Post.query.all()
     return render_template('home.html',posts=posts)
 
 
@@ -110,3 +97,18 @@ def account():
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html',title='Acount',image_file=image_file,form=form)
+
+
+@app.route('/post',methods=['GET','POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        post = Post(title=title,content=content,author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Post has been Created Successfully','success')
+        return redirect(url_for('home'))
+    return render_template('new_post.html',title='New Post',form=form)
