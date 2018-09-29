@@ -4,3 +4,4 @@ Flask-SQLAlchemy==2.3.2
 Flask-Bcrypt==0.7.1
 Flask-Login==0.4.1
 Pillow==5.1.0
+Flask-Mail==0.9.1
