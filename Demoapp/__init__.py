@@ -18,15 +18,17 @@ login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'jm.sajib012@gmail.com'
-app.config['MAIL_PASSWORD'] = '062861245'
+app.config['MAIL_USERNAME'] = 'your email'
+app.config['MAIL_PASSWORD'] = 'your password for email'
 mail = Mail(app)
 
 
 from Demoapp.users.routes import users
 from Demoapp.posts.routes import posts
 from Demoapp.main.routes import main
+from Demoapp.errors.handlers import errors
 
 app.register_blueprint(users)
 app.register_blueprint(posts)
 app.register_blueprint(main)
+app.register_blueprint(errors)
